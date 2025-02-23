@@ -1,0 +1,47 @@
+---
+- name: Add Cloudflare repository GPG key
+  ansible.builtin.apt_key:
+    url: "{{ cloudflare_repository_key_url }}"
+    keyring: "{{ cloudflare_repository_key_path }}"
+    state: present
+
+- name: Add Cloudflare repository to apt sources list
+  ansible.builtin.apt_repository:
+    repo: "{{ cloudflare_repository }}"
+    state: present
+
+- name: Install Cloudflared
+  ansible.builtin.apt:
+    update_cache: true
+    name: cloudflared
+    state: present
+
+- name: Extend network buffering
+  ansible.posix.sysctl:
+    name: net.core.rmem_max
+    value: 2500000
+    sysctl_set: true
+    state: present
+    reload: true
+
+- name: Enable IPv4 ICMP proxy
+  ansible.posix.sysctl:
+    name: net.ipv4.ping_group_range
+    value: '0 0'
+    sysctl_set: true
+    state: present
+    reload: true
+
+- name: Ensure Cloudflare Tunnel service is configured
+  ansible.builtin.template:
+    dest: "/etc/systemd/system/cloudflared.service"
+    src: cloudflared.service.j2
+    owner: root
+    group: root
+    mode: "0755"
+  notify: Restart Cloudflare Tunnel
+
+- name: Enable Cloudflare Tunnel to start on boot
+  ansible.builtin.service:
+    name: cloudflared
+    enabled: true

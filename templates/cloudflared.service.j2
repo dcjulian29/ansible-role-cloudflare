@@ -1,0 +1,14 @@
+[Unit]
+Description=Cloudflare Tunnel
+After=network.target
+Wants=network.target
+
+[Service]
+TimeoutStartSec=0
+Type=notify
+ExecStart=/usr/local/bin/cloudflared tunnel --no-autoupdate --loglevel {{ cloudflare_log_level }} --logfile /var/log/cloudflared/cloudflared.log run --token {{ cloudflare_token }}
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target

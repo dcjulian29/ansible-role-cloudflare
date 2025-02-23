@@ -1,0 +1,5 @@
+---
+- name: Restart Cloudflare Tunnel
+  ansible.builtin.service:
+    name: cloudflared
+    state: restarted

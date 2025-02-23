@@ -1,0 +1,16 @@
+---
+dependencies: [ ]
+galaxy_info:
+  author: Julian Easterling
+  description: Ansible role to install and run Cloudflare remotely managed tunnels
+  galaxy_tags:
+    - cloudflare
+    - dcjulian29
+  license: Apache-2.0
+  min_ansible_version: "2.18.1"
+  namespace: dcjulian29
+  platforms:
+    - name: Debian
+      versions:
+        - bookworm
+  role_name: cloudflare
