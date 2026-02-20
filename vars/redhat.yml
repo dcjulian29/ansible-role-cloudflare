@@ -1,0 +1,4 @@
+---
+cloudflare_repository_key_url: https://pkg.cloudflare.com/cloudflare-main.gpg
+cloudflare_repository: https://pkg.cloudflare.com/cloudflared.repo
+cloudflare_repository_file: cloudflared.repo

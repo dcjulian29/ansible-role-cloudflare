@@ -1,20 +1,23 @@
 ---
-- name: Add Cloudflare repository GPG key
-  ansible.builtin.apt_key:
-    url: "{{ cloudflare_repository_key_url }}"
-    keyring: "{{ cloudflare_repository_key_path }}"
-    state: present
+- name: Include OS-specific variables
+  ansible.builtin.include_vars: "{{ lookup('ansible.builtin.first_found', params) }}"
+  vars:
+    params:
+      files:
+        - "{{ ansible_facts['distribution'] | lower }}.yml"
+        - "{{ ansible_facts['os_family'] | lower }}.yml"
+      paths:
+        - vars
 
-- name: Add Cloudflare repository to apt sources list
-  ansible.builtin.apt_repository:
-    repo: "{{ cloudflare_repository }}"
-    state: present
-
-- name: Install Cloudflared
-  ansible.builtin.apt:
-    update_cache: true
-    name: cloudflared
-    state: present
+- name: Include OS-specific tasks
+  ansible.builtin.include_tasks: "{{ lookup('ansible.builtin.first_found', params) }}"
+  vars:
+    params:
+      files:
+        - "{{ ansible_facts['distribution'] | lower }}.yml"
+        - "{{ ansible_facts['os_family'] | lower }}.yml"
+      paths:
+        - tasks
 
 - name: Extend network buffering
   ansible.posix.sysctl:

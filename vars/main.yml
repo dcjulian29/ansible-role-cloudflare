@@ -1,6 +1,2 @@
 ---
 cloudflare_config_dir: /etc/cloudflared
-cloudflare_repository_key_url: https://pkg.cloudflare.com/cloudflare-main.gpg
-cloudflare_repository_key_path: /usr/share/keyrings/cloudflare-main.gpg
-cloudflare_repository: "deb [signed-by={{ cloudflare_repository_key_path }}] \
-  https://pkg.cloudflare.com/cloudflared {{ ansible_distribution_release }} main"
