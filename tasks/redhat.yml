@@ -1,8 +1,9 @@
 ---
 - name: Add Cloudflare repository to dnf repo list
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ cloudflare_repository }}"
     dest: "/etc/yum.repos.d/{{ cloudflare_repository_file }}"
+    mode: "0644"
 
 - name: Install Cloudflared
   ansible.builtin.dnf:
